@@ -5,22 +5,22 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 0
+  - enabled: 1
     path: Assets/Scenes/DemonstrationBuild/Urdd_LanguageSelect.unity
     guid: ad91b0b9910f91c42b2184f90ae3881d
-  - enabled: 0
+  - enabled: 1
     path: Assets/Scenes/DemonstrationBuild/Urdd_EnglishVersion.unity
     guid: 8304224a4188ba7449af3550b61a5a78
-  - enabled: 0
+  - enabled: 1
     path: Assets/Scenes/DemonstrationBuild/Urdd_WelshVersion.unity
     guid: c5298058e72cc844abd32c904ee833a7
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/AssessmentBuild/SportScienceMainMenu_EnglishVersion.unity
     guid: b6ea2ca88b9389e4290fe07c5cefbf16
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/AssessmentBuild/SportScienceMuscleTesting_EnglishVersion.unity
     guid: aac15afa79db299458d1e9d1a9a77343
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/AssessmentBuild/SportScienceScoreFeedback_EnglishVersion.unity
     guid: a2d77a797c64f13418b74fc9d563934b
   m_configObjects:
