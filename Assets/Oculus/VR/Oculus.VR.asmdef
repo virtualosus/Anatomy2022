@@ -2,12 +2,13 @@
     "name": "Oculus.VR",
     "rootNamespace": "",
     "references": [
-        "GUID:15fc0a57446b3144c949da3e2b9737a9",
-        "GUID:4847341ff46394e83bb78fbd0652937e"
+        "Unity.RenderPipelines.Universal.Runtime",
+        "Unity.XR.OpenXR",
+        "Unity.XR.OpenXR.Editor"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
-    "allowUnsafeCode": false,
+    "allowUnsafeCode": true,
     "overrideReferences": false,
     "precompiledReferences": [],
     "autoReferenced": true,
@@ -42,6 +43,26 @@
             "name": "com.unity.render-pipelines.universal",
             "expression": "10.0.0",
             "define": "USING_MRC_COMPATIBLE_URP_VERSION"
+        },
+        {
+            "name": "Unity",
+            "expression": "",
+            "define": "OVR_UNITY_ASSET_STORE"
+        },
+        {
+            "name": "com.unity.xr.oculus",
+            "expression": "3.2.6",
+            "define": "OCULUS_XR_ETFR_DELAYED_PERMISSION_REQUEST"
+        },
+        {
+            "name": "com.unity.xr.oculus",
+            "expression": "3.3.0",
+            "define": "OCULUS_XR_DYNAMIC_DEPTH_RESOLVE"
+        },
+        {
+            "name": "com.unity.xr.openxr",
+            "expression": "1.5.3",
+            "define": "UNITY_OPENXR_1_5_3"
         }
     ],
     "noEngineReferences": false

@@ -22,11 +22,13 @@ MonoBehaviour:
     m_ReadOnly: 1
     m_SerializedLabels:
     - Locale
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: c54f9248e852f6d41b8576b1831f1411
     m_Address: Welsh (United Kingdom) (cy-GB)
     m_ReadOnly: 1
     m_SerializedLabels:
     - Locale
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 1
   m_Settings: {fileID: 11400000, guid: f645776aba985784d8869307def88e5c, type: 2}
   m_SchemaSet:
