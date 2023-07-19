@@ -11,9 +11,9 @@ public class MainMenuControl : MonoBehaviour
 {
     public KeyboardManager keyboardManager;
     public OVRScreenFade ovrScreenFade;
-    public AirtableRecord airtableRecord;
-    public GameObject keyboardCanvas,studentNumberCanvas,mainMenuCanvas;
-    public Animator mainMenuCanvasAni, studentNumberCanvasAni, keyboardAni;
+    public AirtableManager airtableManager;
+    public GameObject keyboardCanvas, studentNumberCanvas, mainMenuCanvas, uniSelectCanvas;
+    public Animator mainMenuCanvasAni, studentNumberCanvasAni, keyboardAni, uniSelectAni;
     public string sceneToLoad;
     public TMP_Text studentNumberTMP;
 
@@ -36,9 +36,16 @@ public class MainMenuControl : MonoBehaviour
 
     }
 
-    public void LoadStudentNumberInput()
+
+    public void LoadUniSelectInput()
     {
         mainMenuCanvasAni.Play("AirTableInfoFadeOut");
+        StartCoroutine(LoadUniSelectMenu());
+    }
+
+    public void LoadStudentNumberInput()
+    {
+        uniSelectAni.Play("AirTableInfoFadeOut");
         StartCoroutine(LoadMuscleTestingMenu());
     }
 
@@ -58,11 +65,19 @@ public class MainMenuControl : MonoBehaviour
         SceneManager.LoadScene(sceneToLoad);
     }
 
-    public IEnumerator LoadMuscleTestingMenu()
+    public IEnumerator LoadUniSelectMenu()
     {
         mainMenuCanvasAni.Play("AirTableInfoFadeOut");
         yield return new WaitForSeconds(0.5f);
         mainMenuCanvas.SetActive(false);
+        uniSelectCanvas.SetActive(true);
+    }
+
+    public IEnumerator LoadMuscleTestingMenu()
+    {
+        uniSelectAni.Play("AirTableInfoFadeOut");
+        yield return new WaitForSeconds(0.5f);
+        uniSelectCanvas.SetActive(false);
         studentNumberCanvas.SetActive(true);
     }
 
@@ -74,7 +89,7 @@ public class MainMenuControl : MonoBehaviour
     public void Update()
     {
         studentNumberTMP.text = keyboardManager.Input;
-        airtableRecord.studentNumber = studentNumberTMP.text.ToString();
+        airtableManager.studentNumber = studentNumberTMP.text.ToString();
 
         if (studentNumberCanvas.activeSelf)
         {
