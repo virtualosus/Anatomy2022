@@ -12,7 +12,7 @@ public class MuscleTestingScenarioSetup : MonoBehaviour
     public SceneAndScoreManager sceneAndScoreManager;
     public Timer timer;
     public OVRScreenFade ovrScreenFade;
-    public AirtableRecord airtableRecord;
+    public AirtableManager airtableManager;
 
     [Header("Origin Setup")]
     public GameObject[] muscleGroup;
@@ -39,7 +39,7 @@ public class MuscleTestingScenarioSetup : MonoBehaviour
         //muscleOriginCounter = 0;
         GatherAllMuscleGroups();
         timer = GameObject.FindGameObjectWithTag("Scriptholder").GetComponent<Timer>();
-        airtableRecord = GameObject.FindGameObjectWithTag("SceneAndScoreManager").GetComponent<AirtableRecord>();
+        airtableManager = GameObject.FindGameObjectWithTag("SceneAndScoreManager").GetComponent<AirtableManager>();
         sceneAndScoreObject = GameObject.FindGameObjectWithTag("SceneAndScoreManager");
     }
 
@@ -115,9 +115,9 @@ public class MuscleTestingScenarioSetup : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
         Celebration();
         SetMasterScore();
-        airtableRecord.testScore = sceneAndScoreManager.muscleTestingScore.ToString();
-        airtableRecord.testTime = sceneAndScoreManager.muscleTestingTime.ToString();
-        airtableRecord.SendResultsToAirtable();
+        airtableManager.testScore = sceneAndScoreManager.muscleTestingScore.ToString();
+        airtableManager.testTime = sceneAndScoreManager.muscleTestingTime.ToString();
+        airtableManager.CreateRecord();
         yield return new WaitForSeconds(10f);
         ovrScreenFade.FadeOut();
         yield return new WaitForSeconds(2f);
@@ -147,9 +147,8 @@ public class MuscleTestingScenarioSetup : MonoBehaviour
     public void CompleteQuizAndSendToAirtable()
     {
         GatherScores();
-        airtableRecord.testScore = sceneAndScoreManager.muscleTestingScore.ToString();
-        airtableRecord.testTime = sceneAndScoreManager.muscleTestingTime.ToString();
-        airtableRecord.SendResultsToAirtable();
-
+        airtableManager.testScore = sceneAndScoreManager.muscleTestingScore.ToString();
+        airtableManager.testTime = sceneAndScoreManager.muscleTestingTime.ToString();
+        airtableManager.CreateRecord();
     }
 }

@@ -23,6 +23,7 @@ public class FeedbackSceneControl : MonoBehaviour
     void Awake()
     {
         sceneAndScoreManager = GameObject.FindGameObjectWithTag("SceneAndScoreManager").GetComponent<SceneAndScoreManager>();
+        sceneAndScoreObject = GameObject.FindGameObjectWithTag("SceneAndScoreManager");
         toTextSave = GetComponent<ToTextSave>();
         //airtableRecord = GameObject.FindGameObjectWithTag("SceneAndScoreManager").GetComponent<AirtableRecord>();
         sceneAndScoreManager = GameObject.FindGameObjectWithTag("SceneAndScoreManager").GetComponent<SceneAndScoreManager>();
@@ -98,7 +99,7 @@ public class FeedbackSceneControl : MonoBehaviour
         ovrScreenFade.FadeOut();
         yield return new WaitForSeconds(2f);
         Destroy(sceneAndScoreObject);
-        SceneManager.LoadScene("SportScienceScoreFeedback_EnglishVersion");
+        SceneManager.LoadScene("SportScienceMainMenu_EnglishVersion");
     }
 
 

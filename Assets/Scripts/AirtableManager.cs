@@ -4,9 +4,9 @@ using UnityEngine;
 using System;
 using System.Net;
 using System.IO;
-using Newtonsoft.Json;
-
 using Newtonsoft.Json.Linq;
+using TMPro;
+
 
 
 public class AirtableManager : MonoBehaviour
@@ -21,19 +21,22 @@ public class AirtableManager : MonoBehaviour
     public string tableToBeUsedFromAirtable;
 
     [Header("Assesment Information")]
+    public SceneAndScoreManager sceneAndScoreManager;
     public string dateTime;
     public string studentNumber;
     public string testScore;
     public string testTime;
+    public bool extraTime;
     public string extraTimeString;
+    public TMP_Text extraTimeButtonTMP;
 
-     
+
     public void CreateRecord()
     {
         dateTime = System.DateTime.Now.ToString("dd.MM.yyyy HH.mm");
 
         // Create the URL for the API request
-        string url = airtableEndpoint + baseId + "/" + tableName;
+        string url = airtableEndpoint + baseId + "/" + tableToBeUsedFromAirtable;
 
         // Create the data to be sent in the request
         string jsonFields = "{\"fields\": {" +
@@ -43,7 +46,30 @@ public class AirtableManager : MonoBehaviour
                                     "\"Time Remaining\":\"" + testTime + "\", " +
                                     "\"Extra Time Added\":\"" + extraTimeString + "\"" +
                                     "}}";
+        // Start the coroutine to send the API request
+        StartCoroutine(SendRequest(url, "POST", response =>
+        {
+            Debug.Log("Record created: " + response);
+        }, jsonFields));
+    }
+
+    public void TestCreateRecord()
+    {
+        dateTime = System.DateTime.Now.ToString("dd.MM.yyyy HH.mm");
+
+        // Create the URL for the API request
+        string url = airtableEndpoint + baseId + "/" + tableName;
+
+        Debug.Log(url);
+
+        // Create the data to be sent in the request
+        string jsonFields = "{\"fields\": {" +
+                                    "\"Date and Time\":\"" + dateTime + "\", " +
+                                    "\"Extra Time Added\":\"" + extraTimeString + "\"" +
+                                    "}}";
         string jsonData = "{\"fields\": " + jsonFields + "}";
+
+        Debug.Log(jsonData);
 
         // Start the coroutine to send the API request
         StartCoroutine(SendRequest(url, "POST", response =>
@@ -135,6 +161,24 @@ public class AirtableManager : MonoBehaviour
             tableToBeUsedFromAirtable = data.fields.CanberraTableName;
 
             Debug.Log("Table to be used: " + tableToBeUsedFromAirtable);
+        }
+    }
+
+    public void ExtraTime()
+    {
+        if (!extraTime)
+        {
+            extraTime = true;
+            extraTimeButtonTMP.text = "Remove Extra Time";
+            sceneAndScoreManager.muscleTestingMaxTime = 12.5f;
+            extraTimeString = "Yes";
+        }
+        else
+        {
+            extraTime = false;
+            extraTimeButtonTMP.text = "Add Extra Time";
+            sceneAndScoreManager.muscleTestingMaxTime = 10;
+            extraTimeString = "No";
         }
     }
 
