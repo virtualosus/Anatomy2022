@@ -10,12 +10,14 @@ public class OrientatedObjectAttacher : MonoBehaviour
     public GameObject rightHand;
     public GameObject leftHand;
     public BoneNameQuiz boneNameQuiz;
-    public OnboardingManager onboardingManager;
+    //public OnboardingManager onboardingManager;
+    public OnboardingSceneManager onboardingSceneManager;
     public GameObject onboardingHolder;
     public MuscleLearningScenarioSetup muscleLearningScenarioSetup;
 
 
     [Header("Scene Identifier")]
+    public bool onboardingScene;
     public bool skeletalScene;
     public bool muscleLearningScene;
     public bool muscleTestingScene;
@@ -56,11 +58,15 @@ public class OrientatedObjectAttacher : MonoBehaviour
         thisGameObject = transform.gameObject;
         thisGameObjectName = transform.name;
 
-        if (skeletalScene)
+        if (onboardingScene)
         {
             onboardingHolder = GameObject.Find("---ONBOARDING ---");
-            onboardingManager = onboardingHolder.GetComponent<OnboardingManager>();
+            //onboardingManager = onboardingHolder.GetComponent<OnboardingManager>();
+            onboardingSceneManager = onboardingHolder.GetComponent<OnboardingSceneManager>();
+        }
 
+        if (skeletalScene)
+        {
             boneNameQuiz = FindObjectOfType<BoneNameQuiz>();
             skeletonAttachObject = GameObject.Find(thisGameObjectName + " Attach");
             skeletonReplaceObject = GameObject.Find(thisGameObjectName + " Replace");
@@ -124,6 +130,28 @@ public class OrientatedObjectAttacher : MonoBehaviour
 
         audioSource.Play();
 
+        if (onboardingScene)
+        {
+            skeletonAttachObject.SetActive(false);
+            skeletonReplaceObject.SetActive(true);
+            boneNameQuiz.lastBoneConnected = thisGameObjectName;
+            boneNameQuiz.GenerateQuiz();
+            onboardingSceneManager.AttachToSkeleton();
+            //onboardingManager.attachBone = true;
+            //onboardingManager.UpdateChecklist();
+            if (!endOfSequence)
+            {
+                for (int i = 0; i < nextInSequenceSkeletonTurnOff.Length; i++)
+                {
+                    nextInSequenceSkeletonTurnOff[i].SetActive(false);
+                }
+
+                for (int i = 0; i < nextInSequenceSkeletonTurnOn.Length; i++)
+                {
+                    nextInSequenceSkeletonTurnOn[i].SetActive(true);
+                }
+            }
+        }
 
         if (skeletalScene)
         {
@@ -131,8 +159,6 @@ public class OrientatedObjectAttacher : MonoBehaviour
             skeletonReplaceObject.SetActive(true);
             boneNameQuiz.lastBoneConnected = thisGameObjectName;
             boneNameQuiz.GenerateQuiz();
-            onboardingManager.attachBone = true;
-            onboardingManager.UpdateChecklist();
             if (!endOfSequence)
             {
                 for (int i = 0; i < nextInSequenceSkeletonTurnOff.Length; i++)

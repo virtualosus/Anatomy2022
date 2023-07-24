@@ -13,7 +13,9 @@ public class CustomPointer : MonoBehaviour
 
     [Header ("Scripts")]
     public SceneAndScoreManager sceneAndScoreManager;
-    public OnboardingManager onboardingManager;
+    //public OnboardingManager onboardingManager;
+    public OnboardingSceneManager onboardingSceneManager;
+    public bool onboardingScene;
     public OVRScreenFade ovrScreenFade;
     public BoneNameQuiz boneNameQuiz;
     public XRInteractorLineVisual xRInteractorLineVisual;
@@ -85,59 +87,89 @@ public class CustomPointer : MonoBehaviour
 
         if (OVRInput.Get(OVRInput.Button.PrimaryThumbstickUp))
         {
-            if (!onboardingManager.leftThumbstickMove)
+            if (onboardingScene)
             {
-                onboardingManager.leftThumbstickMove = true;
-                onboardingManager.UpdateChecklist();
+                onboardingSceneManager.MoveLeftThumbstick();
             }
+
+            //if (!onboardingManager.leftThumbstickMove)
+            //{
+            //    onboardingManager.leftThumbstickMove = true;
+            //    onboardingManager.UpdateChecklist();
+            //}
 
         }
 
         if (OVRInput.Get(OVRInput.Button.PrimaryThumbstickDown))
         {
-            if (!onboardingManager.leftThumbstickMove)
+            if (onboardingScene)
             {
-                onboardingManager.leftThumbstickMove = true;
-                onboardingManager.UpdateChecklist();
+                onboardingSceneManager.MoveLeftThumbstick();
             }
+
+            //if (!onboardingManager.leftThumbstickMove)
+            //{
+            //    onboardingManager.leftThumbstickMove = true;
+            //    onboardingManager.UpdateChecklist();
+            //}
 
         }
 
         if (OVRInput.Get(OVRInput.Button.PrimaryThumbstickLeft))
         {
-            if (!onboardingManager.leftThumbstickMove)
+            if (onboardingScene)
             {
-                onboardingManager.leftThumbstickMove = true;
-                onboardingManager.UpdateChecklist();
+                onboardingSceneManager.MoveLeftThumbstick();
             }
+
+            //if (!onboardingManager.leftThumbstickMove)
+            //{
+            //    onboardingManager.leftThumbstickMove = true;
+            //    onboardingManager.UpdateChecklist();
+            //}
         }
 
         if (OVRInput.Get(OVRInput.Button.PrimaryThumbstickRight))
         {
-            if (!onboardingManager.leftThumbstickMove)
+            if (onboardingScene)
             {
-                onboardingManager.leftThumbstickMove = true;
-                onboardingManager.UpdateChecklist();
+                onboardingSceneManager.MoveLeftThumbstick();
             }
+
+            //if (!onboardingManager.leftThumbstickMove)
+            //{
+            //    onboardingManager.leftThumbstickMove = true;
+            //    onboardingManager.UpdateChecklist();
+            //}
         }
 
         if (OVRInput.Get(OVRInput.Button.SecondaryThumbstickLeft))
         {
-            if (!onboardingManager.rightThumbstickTurn)
+            if (onboardingScene)
             {
-                onboardingManager.rightThumbstickTurn = true;
-                onboardingManager.UpdateChecklist();
+                onboardingSceneManager.MoveRightThumbstick();
             }
+
+            //if (!onboardingManager.rightThumbstickTurn)
+            //{
+            //    onboardingManager.rightThumbstickTurn = true;
+            //    onboardingManager.UpdateChecklist();
+            //}
 
         }
 
         if (OVRInput.Get(OVRInput.Button.SecondaryThumbstickRight))             
         {
-            if (!onboardingManager.rightThumbstickTurn)
+            if (onboardingScene)
             {
-                onboardingManager.rightThumbstickTurn = true;
-                onboardingManager.UpdateChecklist();
+                onboardingSceneManager.MoveRightThumbstick();
             }
+
+            //if (!onboardingManager.rightThumbstickTurn)
+            //{
+            //    onboardingManager.rightThumbstickTurn = true;
+            //    onboardingManager.UpdateChecklist();
+            //}
         }
 
         if (OVRInput.Get(OVRInput.Button.Start))

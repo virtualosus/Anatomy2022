@@ -12,7 +12,9 @@ public class SelectedObject : MonoBehaviour
     [Header("Scripts")]
     private CustomPointer rightCustomPointer, leftCustomPointer;
     private Outline outline;
-    public OnboardingManager onboardingManager;
+    //public OnboardingManager onboardingManager;
+    public OnboardingSceneManager onboardingSceneManager;
+    public bool onboardingScene;
     public GameObject onboardingHolder;
 
     [Header("This Game Object")]
@@ -47,7 +49,8 @@ public class SelectedObject : MonoBehaviour
         leftCustomPointer = leftHand.GetComponent<CustomPointer>();
 
         onboardingHolder = GameObject.Find("---ONBOARDING ---");
-        onboardingManager = onboardingHolder.GetComponent<OnboardingManager>();
+        //onboardingManager = onboardingHolder.GetComponent<OnboardingManager>();
+        onboardingSceneManager = onboardingHolder.GetComponent<OnboardingSceneManager>();
 
         outline = GetComponentInChildren<Outline>();
 
@@ -105,11 +108,19 @@ public class SelectedObject : MonoBehaviour
 
     public void ActivateSelect()
     {
-        if (!onboardingManager.selectBone)
+        if (onboardingScene)
         {
-            onboardingManager.selectBone = true;
-            onboardingManager.UpdateChecklist();
+            onboardingSceneManager.SelectObject();
         }
+
+        //if (!onboardingManager.selectBone)
+        //{
+        //    onboardingManager.selectBone = true;
+        //    onboardingManager.UpdateChecklist();
+        //}
+
+
+
         outline.OutlineWidth = 5;
 
         selected = true;
@@ -119,8 +130,13 @@ public class SelectedObject : MonoBehaviour
 
     public void DeactivateSelect()
     {
-        onboardingManager.deselectBone = true;
-        onboardingManager.UpdateChecklist();
+        if (onboardingScene)
+        {
+            onboardingSceneManager.DeselectObject();
+        }
+
+        //onboardingManager.deselectBone = true;
+        //onboardingManager.UpdateChecklist();
         outline.OutlineWidth = 0;
         atAttachPoint = false;
         leftHandSelect = false;
@@ -140,14 +156,14 @@ public class SelectedObject : MonoBehaviour
             if (rightHandSelect)
             {
                 thisGameObject.transform.position = rightHand.transform.position;
-                onboardingManager.moveBone = true;
-                onboardingManager.UpdateChecklist();
+                //onboardingManager.moveBone = true;
+                //onboardingManager.UpdateChecklist();
             }
             else if (leftHandSelect)
             {
                 thisGameObject.transform.position = leftHand.transform.position;
-                onboardingManager.moveBone = true;
-                onboardingManager.UpdateChecklist();
+                //onboardingManager.moveBone = true;
+                //onboardingManager.UpdateChecklist();
             }
 
 
@@ -165,8 +181,14 @@ public class SelectedObject : MonoBehaviour
             atAttachPoint = false;
             thisGameObject.transform.position = origin;
             thisGameObject.transform.rotation = originalRotation;
-            onboardingManager.returnBoneToOrigin = true;
-            onboardingManager.UpdateChecklist();
+
+            if (onboardingScene)
+            {
+                onboardingSceneManager.ReturnToOrigin();
+            }
+
+            //onboardingManager.returnBoneToOrigin = true;
+            //onboardingManager.UpdateChecklist();
         }
     }
 

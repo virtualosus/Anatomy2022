@@ -10,7 +10,10 @@ public class BoneNameQuiz : MonoBehaviour
     [Header("Scripts")]
     public SceneAndScoreManager sceneAndScoreManager;
     public Timer timer;
-    public OnboardingManager onboardingManager;
+    public OnboardingSceneManager onboardingSceneManager;
+    public GameObject onboardingHolder;
+    public bool onboardingScene;
+    //public OnboardingManager onboardingManager;
     public OVRScreenFade ovrScreenFade;
 
 
@@ -50,7 +53,9 @@ public class BoneNameQuiz : MonoBehaviour
     private void Awake()
     {
         sceneAndScoreManager = GameObject.FindGameObjectWithTag("SceneAndScoreManager").GetComponent<SceneAndScoreManager>();
-
+        onboardingHolder = GameObject.Find("---ONBOARDING ---");
+        //onboardingManager = onboardingHolder.GetComponent<OnboardingManager>();
+        onboardingSceneManager = onboardingHolder.GetComponent<OnboardingSceneManager>();
     }
 
     // Start is called before the first frame update
@@ -67,8 +72,12 @@ public class BoneNameQuiz : MonoBehaviour
     {
         if (!timeRunOut)
         {
-            onboardingManager.answerQuiz = true;
-            onboardingManager.UpdateChecklist();
+            if (onboardingScene)
+            {
+                onboardingSceneManager.AnswerQuiz();
+            }
+            //onboardingManager.answerQuiz = true;
+            //onboardingManager.UpdateChecklist();
             correctAnswer = lastBoneConnected;
             runningMaxScore++;
             if (answerSelected == correctAnswer)

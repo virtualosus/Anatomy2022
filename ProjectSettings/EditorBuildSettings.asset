@@ -5,13 +5,13 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 0
+  - enabled: 1
     path: Assets/Scenes/DemonstrationBuild/Urdd_LanguageSelect.unity
     guid: ad91b0b9910f91c42b2184f90ae3881d
-  - enabled: 0
+  - enabled: 1
     path: Assets/Scenes/DemonstrationBuild/Urdd_EnglishVersion.unity
     guid: 8304224a4188ba7449af3550b61a5a78
-  - enabled: 0
+  - enabled: 1
     path: Assets/Scenes/DemonstrationBuild/Urdd_WelshVersion.unity
     guid: c5298058e72cc844abd32c904ee833a7
   - enabled: 0
