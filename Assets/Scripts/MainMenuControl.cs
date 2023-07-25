@@ -36,6 +36,13 @@ public class MainMenuControl : MonoBehaviour
 
     }
 
+    public void LoadOnboardingScene()
+    {
+        mainMenuCanvasAni.Play("AirTableInfoFadeOut");
+        sceneToLoad = "SportScienceOnboarding_EnglishVersion";
+        StartCoroutine(SceneLoader());
+    }
+
 
     public void LoadUniSelectInput()
     {
