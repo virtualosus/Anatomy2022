@@ -67,7 +67,8 @@ public class PositionAndRotationCompare : MonoBehaviour
 
         GetDestinationObjectValues();
 
-        thisGameObject.transform.parent = attachObject.transform;
+        StartCoroutine(SetParent());
+
     }
 
     private void Update()
@@ -156,5 +157,14 @@ public class PositionAndRotationCompare : MonoBehaviour
         roundedRefAttachCubeRotY = Mathf.Round(refAttachCubeRotation.y);
         roundedRefAttachCubeRotZ = Mathf.Round(refAttachCubeRotation.z);
         roundedRefAttachCubeRotation = new Vector3(roundedRefAttachCubeRotX, roundedRefAttachCubeRotY, roundedRefAttachCubeRotZ);
+    }
+
+
+    public IEnumerator SetParent()
+    {
+        yield return new WaitForSeconds(0.75f);
+        thisGameObject.transform.parent = attachObject.transform;
+
+
     }
 }

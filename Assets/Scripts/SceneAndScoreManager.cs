@@ -18,6 +18,8 @@ public class SceneAndScoreManager : MonoBehaviour
 
     public bool skeletalScene, muscleLearningScene, muscleTestingScene;
 
+    public string bodyOrientation;
+
 
     // Start is called before the first frame update
     void Awake()

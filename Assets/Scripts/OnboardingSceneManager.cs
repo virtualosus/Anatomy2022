@@ -11,6 +11,8 @@ public class OnboardingSceneManager : MonoBehaviour
     public Animator leftThumbstickMoveAni, rightThumbstickTurnAni, selectBoneAni, returnBoneToOriginAni, deselectBoneAni, attachBoneAni, answerQuizAni;
     public Animator textAni, fadeOutCanvas;
     public bool complete;
+    public bool demoBuild;
+    public ReturnToMainMenu returnToMainMenu;
 
 
     public GameObject[] completionIndicators;
@@ -98,8 +100,17 @@ public class OnboardingSceneManager : MonoBehaviour
         {
             answerQuizAni.Play("Complete");
             complete = true;
-            StartCoroutine(UpdateOnboardingCanvas());
 
+            if (demoBuild)
+            {
+                StartCoroutine(UpdateOnboardingCanvas());
+            }
+            else
+            {
+                stringForOnboardingCanvasText = "You have completed the onboarding. \n You will be returned to the main menu.";
+                StartCoroutine(UpdateOnboardingCanvas());
+                returnToMainMenu.GoToMainMenu();
+            }
         }
     }
 
@@ -107,7 +118,7 @@ public class OnboardingSceneManager : MonoBehaviour
     {
         if (complete)
         {
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(1f);
             fadeOutCanvas.Play("fadeOutCanvas");
         }
         else
