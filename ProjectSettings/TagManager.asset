@@ -49,6 +49,8 @@ TagManager:
   - PlayerLeftHandAttach
   - VRGazeInteractable
   - Keyboard
+  - LeftHandController
+  - RightHandController
   layers:
   - Default
   - TransparentFX

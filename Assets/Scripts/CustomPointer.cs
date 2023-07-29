@@ -4,25 +4,28 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 using UnityEngine.XR.Interaction.Toolkit;
+using UnityEngine.XR;
 
 
 public class CustomPointer : MonoBehaviour
 {
-    [Header ("Hand Option")]
+    [Header ("Hand And Controllers Option")]
     public bool leftHand;
+    public XRController xrController;
+    public float thumbstickDeadzone = 0.2f;
+    private bool thumbstickUsed = false;
+    public bool onboardingScene;
 
     [Header ("Scripts")]
     public SceneAndScoreManager sceneAndScoreManager;
-    //public OnboardingManager onboardingManager;
     public OnboardingSceneManager onboardingSceneManager;
-    public bool onboardingScene;
     public OVRScreenFade ovrScreenFade;
     public BoneNameQuiz boneNameQuiz;
     public XRInteractorLineVisual xRInteractorLineVisual;
 
     [Header ("Pointer Specific")]
     public LineRenderer lineRenderer;
-    private float flexibleLineLength;
+    public float flexibleLineLength;
     public bool linePointerOn;
     public bool objectHit = false;
     public bool holdingObject;
@@ -30,7 +33,6 @@ public class CustomPointer : MonoBehaviour
     public GameObject currenHighlightedObject;
     public string currentHighlightedObjectName;
     public Vector3 endPosition;
-
 
     [Header("Buttons, Quiz and Timer")]
     public QuizButton[] quizButton;
@@ -44,7 +46,8 @@ public class CustomPointer : MonoBehaviour
     public UnityEvent handDeselect;
     public UnityEvent handReturnOrigin;
 
-    
+
+
 
     // Start is called before the first frame update
     void Start()
@@ -54,125 +57,25 @@ public class CustomPointer : MonoBehaviour
         Vector3[] startLinePositions = new Vector3[2] { Vector3.zero, Vector3.zero };
         linePointerOn = true;
         coroutineRunning = false;
-
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (OVRInput.Get(OVRInput.Button.One))
+        bool isButtonPressed;
+
+        if(GetButtonValue(InputHelpers.Button.PrimaryButton, out isButtonPressed) && isButtonPressed)
         {
             handDeselect.Invoke();
-
         }
 
-        if (OVRInput.Get(OVRInput.Button.Two))
+        if(GetButtonValue(InputHelpers.Button.SecondaryButton, out isButtonPressed) && isButtonPressed)
         {
             handReturnOrigin.Invoke();
             handDeselect.Invoke();
         }
 
-        if (OVRInput.Get(OVRInput.Button.Three))
-        {
-            handDeselect.Invoke();
-
-        }
-
-        if (OVRInput.Get(OVRInput.Button.Four))
-        {
-            handReturnOrigin.Invoke();
-            handDeselect.Invoke();
-        }
-
-
-        if (OVRInput.Get(OVRInput.Button.PrimaryThumbstickUp))
-        {
-            if (onboardingScene)
-            {
-                onboardingSceneManager.MoveLeftThumbstick();
-            }
-
-            //if (!onboardingManager.leftThumbstickMove)
-            //{
-            //    onboardingManager.leftThumbstickMove = true;
-            //    onboardingManager.UpdateChecklist();
-            //}
-
-        }
-
-        if (OVRInput.Get(OVRInput.Button.PrimaryThumbstickDown))
-        {
-            if (onboardingScene)
-            {
-                onboardingSceneManager.MoveLeftThumbstick();
-            }
-
-            //if (!onboardingManager.leftThumbstickMove)
-            //{
-            //    onboardingManager.leftThumbstickMove = true;
-            //    onboardingManager.UpdateChecklist();
-            //}
-
-        }
-
-        if (OVRInput.Get(OVRInput.Button.PrimaryThumbstickLeft))
-        {
-            if (onboardingScene)
-            {
-                onboardingSceneManager.MoveLeftThumbstick();
-            }
-
-            //if (!onboardingManager.leftThumbstickMove)
-            //{
-            //    onboardingManager.leftThumbstickMove = true;
-            //    onboardingManager.UpdateChecklist();
-            //}
-        }
-
-        if (OVRInput.Get(OVRInput.Button.PrimaryThumbstickRight))
-        {
-            if (onboardingScene)
-            {
-                onboardingSceneManager.MoveLeftThumbstick();
-            }
-
-            //if (!onboardingManager.leftThumbstickMove)
-            //{
-            //    onboardingManager.leftThumbstickMove = true;
-            //    onboardingManager.UpdateChecklist();
-            //}
-        }
-
-        if (OVRInput.Get(OVRInput.Button.SecondaryThumbstickLeft))
-        {
-            if (onboardingScene)
-            {
-                onboardingSceneManager.MoveRightThumbstick();
-            }
-
-            //if (!onboardingManager.rightThumbstickTurn)
-            //{
-            //    onboardingManager.rightThumbstickTurn = true;
-            //    onboardingManager.UpdateChecklist();
-            //}
-
-        }
-
-        if (OVRInput.Get(OVRInput.Button.SecondaryThumbstickRight))             
-        {
-            if (onboardingScene)
-            {
-                onboardingSceneManager.MoveRightThumbstick();
-            }
-
-            //if (!onboardingManager.rightThumbstickTurn)
-            //{
-            //    onboardingManager.rightThumbstickTurn = true;
-            //    onboardingManager.UpdateChecklist();
-            //}
-        }
-
-        if (OVRInput.Get(OVRInput.Button.Start))
+        if(leftHand && GetButtonValue(InputHelpers.Button.MenuButton, out isButtonPressed) && isButtonPressed)
         {
             countdownTimer -= Time.deltaTime;
             if (countdownTimer < 0 && !coroutineRunning)
@@ -185,24 +88,74 @@ public class CustomPointer : MonoBehaviour
             countdownTimer = 3f;
         }
 
+        if (onboardingScene)
+        {
+            HandleThumbstickMovement();
+        }
+
         if (linePointerOn)
         {
             xRInteractorLineVisual.enabled = true;
-
-            //lineRenderer.enabled = true;
             ActiveLineRenderer(transform.position, transform.forward, flexibleLineLength);
         }
         else
         {
             xRInteractorLineVisual.enabled = false;
-            //lineRenderer.enabled = false;
         }
     }
 
- 
+    private void HandleThumbstickMovement()
+    {
+        Vector2 thumbstickValue;
+        if (xrController.inputDevice.TryGetFeatureValue(CommonUsages.primary2DAxis, out thumbstickValue))
+        {
+            if (leftHand)
+            {
+                if (thumbstickValue.magnitude > thumbstickDeadzone)
+                {
+                    if (!thumbstickUsed)
+                    {
+                        onboardingSceneManager.MoveLeftThumbstick();
+                    }
+                }
+            }
+            else
+            {
+                if (thumbstickValue.magnitude > thumbstickDeadzone)
+                {
+                    if (!thumbstickUsed)
+                    {
+                        onboardingSceneManager.MoveRightThumbstick();
+                    }
+                }
+            }            
+        }
+    }
+
+    private bool GetButtonValue(InputHelpers.Button button, out bool value)
+    {
+        switch (button)
+        {
+            case InputHelpers.Button.Trigger:
+                return xrController.inputDevice.TryGetFeatureValue(CommonUsages.triggerButton, out value);
+            case InputHelpers.Button.PrimaryButton:
+                return xrController.inputDevice.TryGetFeatureValue(CommonUsages.primaryButton, out value);
+            case InputHelpers.Button.GripButton:
+                return xrController.inputDevice.TryGetFeatureValue(CommonUsages.gripButton, out value);
+            case InputHelpers.Button.SecondaryButton:
+                return xrController.inputDevice.TryGetFeatureValue(CommonUsages.secondaryButton, out value);
+            case InputHelpers.Button.MenuButton:
+                return xrController.inputDevice.TryGetFeatureValue(CommonUsages.menuButton, out value);
+        }
+
+        value = false;
+        return false;
+    }
 
     public void ActiveLineRenderer(Vector3 targetPosition, Vector3 direction, float length)
     {
+        bool triggerButtonPressed;
+
         RaycastHit hit;
 
         Ray lineRendererOut = new Ray(targetPosition, direction);
@@ -224,20 +177,8 @@ public class CustomPointer : MonoBehaviour
 
                     if (leftHand)
                     {
-                        //if (OVRInput.Get(OVRInput.Button.SecondaryIndexTrigger))
-                        //{
-                        //    if (!holdingObject)
-                        //    {
-                        //        currenHighlightedObject.GetComponent<SelectedObject>().leftHandSelect = true;
-                        //        currenHighlightedObject.GetComponent<SelectedObject>().ActivateSelect();
-                        //        holdingObject = true;
-                        //        handMoveTowards.Invoke();
-                        //    }
-                        //}
-                        //else if (OVRInput.Get(OVRInput.Button.PrimaryIndexTrigger))
-                        //{
-                        if (OVRInput.Get(OVRInput.Button.PrimaryIndexTrigger))
-                        {                        
+                       if (GetButtonValue(InputHelpers.Button.Trigger, out triggerButtonPressed) && triggerButtonPressed)
+                       {
                             if (!holdingObject)
                             {
                                 currenHighlightedObject.GetComponent<SelectedObject>().leftHandSelect = true;
@@ -245,11 +186,11 @@ public class CustomPointer : MonoBehaviour
                                 holdingObject = true;
                                 handMoveTowards.Invoke();
                             }
-                        }
+                       }
                     }
                     else
                     {
-                        if (OVRInput.Get(OVRInput.Button.SecondaryIndexTrigger))
+                        if (GetButtonValue(InputHelpers.Button.Trigger, out triggerButtonPressed) && triggerButtonPressed)
                         {
                             if (!holdingObject)
                             {
@@ -259,16 +200,6 @@ public class CustomPointer : MonoBehaviour
                                 handMoveTowards.Invoke();
                             }
                         }
-                        //else if (OVRInput.Get(OVRInput.Button.PrimaryIndexTrigger))
-                        //{
-                        //    if (!holdingObject)
-                        //    {
-                        //        currenHighlightedObject.GetComponent<SelectedObject>().rightHandSelect = true;
-                        //        currenHighlightedObject.GetComponent<SelectedObject>().ActivateSelect();
-                        //        holdingObject = true;
-                        //        handMoveTowards.Invoke();
-                        //    }
-                        //}
                     }
                 }
             }
@@ -277,7 +208,6 @@ public class CustomPointer : MonoBehaviour
             {
                 currentHighlightedObjectName = pointObject.GetComponent<QuizButton>().thisGameObjectName;
                 currenHighlightedObject = GameObject.Find(currentHighlightedObjectName);
-                //lineRenderer.material = highlighted;
 
                 for (int i = 0; i < quizButton.Length; i++)
                 {
@@ -296,46 +226,12 @@ public class CustomPointer : MonoBehaviour
                         }
                     }
                 }
-                if (OVRInput.Get(OVRInput.Button.PrimaryIndexTrigger))
+
+                if (GetButtonValue(InputHelpers.Button.Trigger, out triggerButtonPressed) && triggerButtonPressed)
                 {
                     pointObject.GetComponent<QuizButton>().ButtonSelect();
                 }
 
-                if (OVRInput.Get(OVRInput.Button.SecondaryIndexTrigger))
-                {
-                    pointObject.GetComponent<QuizButton>().ButtonSelect();
-                }
-            }
-
-
-            //else if (pointObject.GetComponent<LanguageButton>())
-            //{
-            //    currentHighlightedObjectName = pointObject.GetComponent<LanguageButton>().thisGameObjectName;
-            //    currenHighlightedObject = GameObject.Find(currentHighlightedObjectName);
-            //    for (int i = 0; i < languageButton.Length; i++)
-            //    {
-            //        if (languageButton[i].name == currentHighlightedObjectName)
-            //        {
-            //            languageButton[i].rightHandRay = true;
-            //        }
-            //    }
-
-            //    if (OVRInput.Get(OVRInput.Button.SecondaryIndexTrigger))
-            //    {
-            //        pointObject.GetComponent<LanguageButton>().ButtonSelect();
-            //    }
-            //}
-
-            else if (!pointObject.GetComponent<QuizButton>() && !pointObject.GetComponent<SelectedObject>() && !pointObject.GetComponent<LanguageButton>())
-            {
-                for (int i = 0; i < quizButton.Length; i++)
-                {
-                    quizButton[i].rightHandSelect = false;
-                    quizButton[i].leftHandSelect = false;
-
-                }
-
-                currentHighlightedObjectName = null;
             }
         }
     }
