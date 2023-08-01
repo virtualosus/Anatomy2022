@@ -8,7 +8,7 @@ public class BuildTargetManager : MonoBehaviour
     public ActionBasedController leftXRController, rightXRController;
     public bool quest2, pico4, questPro;
 
-    public GameObject quest2Left, quest2Right, pico4Left, pico4Right;
+    public GameObject quest2Left, quest2Right, pico4Left, pico4Right, questProLeft, questProRight;
 
     private void Awake()
     {
@@ -27,17 +27,11 @@ public class BuildTargetManager : MonoBehaviour
             leftXRController.modelPrefab = pico4Left.transform;
             rightXRController.modelPrefab = pico4Right.transform;
         }
-    }
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        if (questPro)
+        {
+            leftXRController.modelPrefab = questProLeft.transform;
+            rightXRController.modelPrefab = questProRight.transform;
+        }
     }
 }

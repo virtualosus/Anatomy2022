@@ -52,6 +52,8 @@ TagManager:
   - LeftHandController
   - RightHandController
   - Wall
+  - WholeBody
+  - Table
   layers:
   - Default
   - TransparentFX

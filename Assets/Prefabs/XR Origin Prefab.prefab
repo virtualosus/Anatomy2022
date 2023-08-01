@@ -312,13 +312,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   leftXRController: {fileID: 0}
   rightXRController: {fileID: 0}
-  quest2: 0
-  pico4: 1
+  quest2: 1
+  pico4: 0
   questPro: 0
   quest2Left: {fileID: 100016, guid: 8b83018900d13bb4f8e0ad895cb004e5, type: 3}
   quest2Right: {fileID: 100018, guid: 25b5eb0761edb6346b0b3444af76b55e, type: 3}
   pico4Left: {fileID: 3222469904833361626, guid: 853840c5196b2486a97e1785f3a68575, type: 3}
   pico4Right: {fileID: 1704171135803129665, guid: 3a5f20f82a5224d7d969e99da633fc69, type: 3}
+  questProLeft: {fileID: 919132149155446097, guid: 2b9768cc0be08784b91b7da60696ba29, type: 3}
+  questProRight: {fileID: 919132149155446097, guid: c933168a9a0f1e04bb793786b96e2f4b, type: 3}
 --- !u!1 &1137420664140414888
 GameObject:
   m_ObjectHideFlags: 0
@@ -539,7 +541,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_System: {fileID: 5519651492850101636}
-  m_TurnAmount: 45
+  m_TurnAmount: 30
   m_DebounceTime: 0.5
   m_EnableTurnLeftRight: 1
   m_EnableTurnAround: 0
