@@ -51,6 +51,7 @@ TagManager:
   - Keyboard
   - LeftHandController
   - RightHandController
+  - Wall
   layers:
   - Default
   - TransparentFX
