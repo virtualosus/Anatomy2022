@@ -13,7 +13,7 @@ PlayerSettings:
   useOnDemandResources: 0
   accelerometerFrequency: 60
   companyName: virtualosus
-  productName: AnatomyResearchBuild
+  productName: Anatomy2023Research
   defaultCursor: {fileID: 0}
   cursorHotspot: {x: 0, y: 0}
   m_SplashScreenBackgroundColor: {r: 0.8, g: 0.8, b: 0.8, a: 1}
@@ -265,6 +265,8 @@ PlayerSettings:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 11400000, guid: 95a9d96401fe8ad4aacabace15ee4cb9, type: 2}
+  - {fileID: -3589025554020961763, guid: fd39241b6276159438686962687b8c94, type: 2}
+  - {fileID: 11400000, guid: ea3cfb22f9711ab429c03e4f4f17ed0c, type: 2}
   metroInputSource: 0
   wsaTransparentSwapchain: 0
   m_HolographicPauseOnTrackingLoss: 1
@@ -284,7 +286,7 @@ PlayerSettings:
   androidSupportedAspectRatio: 1
   androidMaxAspectRatio: 2.1
   applicationIdentifier:
-    Android: com.virtualosus.AnatomyResearchBuild
+    Android: com.virtualosus.Anatomy2023Research
   buildNumber:
     Standalone: 0
     iPhone: 0

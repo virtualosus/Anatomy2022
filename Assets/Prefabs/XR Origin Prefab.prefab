@@ -312,8 +312,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   leftXRController: {fileID: 0}
   rightXRController: {fileID: 0}
-  quest2: 0
-  pico4: 1
+  quest2: 1
+  pico4: 0
   questPro: 0
   quest2Left: {fileID: 100016, guid: 8b83018900d13bb4f8e0ad895cb004e5, type: 3}
   quest2Right: {fileID: 100018, guid: 25b5eb0761edb6346b0b3444af76b55e, type: 3}
